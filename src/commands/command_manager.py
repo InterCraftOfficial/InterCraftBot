@@ -11,13 +11,13 @@ class CommandManager:
 
 	def autoloadCommand(self, commandName):
 		if commandName not in self.__modules:
-			try:
+			# try:
 				moduleName = commandName + '_command'
 				command = getattr(importlib.__import__('commands.' + moduleName), moduleName).commandClass
 				self.__modules[commandName] = command()
 				print("Autoload successful for: " + commandName)
 				return self.__modules[commandName]
-			except ImportError:
+			# except ImportError:
 				print("Failed to autoload command")
 				return None
 		else:

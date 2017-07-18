@@ -18,18 +18,19 @@ class Command:
 		parts = re.split('([\s]+)', message.content)
 		print("Executing...", parts)
 		if len(parts) > 0 and len(parts[0]) > 0:
-			commandName = parts[0]
-			if len(parts) > 1 and len(parts[2]) > 0:
-				arguments = ''.join(parts[2:]) # Strip the command part out of the command line
+			method = self.commandMethod(parts[0])
+			if method:
+				if len(parts) > 1 and len(parts[2]) > 0:
+					arguments = ''.join(parts[2:]) # Strip the command part out of the command line
+				else:
+					arguments = None
 			else:
-				arguments = None
+				method = self.commandMethod('run')
+				arguments = ''.join(parts)
 		else:
-			commandName = 'run'
+			method = self.commandMethod('run')
 			arguments = None
 
-		print(commandName)
-
-		method = self.commandMethod(commandName)
 		if method:
 			message.content = arguments
 			return method(message)
