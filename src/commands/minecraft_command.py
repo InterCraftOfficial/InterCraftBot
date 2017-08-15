@@ -22,6 +22,8 @@ class MinecraftCommand(Command):
 		status = server.status()
 		result += 'Latency: ' + str(status.latency) + 'ms\n'
 		result += 'Players online: ' + str(status.players.online)
+		for player in status.players.sample:
+			result += '\n  ' + player.name
 		return result
 
 
