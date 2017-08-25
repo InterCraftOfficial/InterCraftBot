@@ -3,12 +3,12 @@ import json
 class JsonReader():
 
     def getServerKey(self):
-        key = {}
+        config = {}
         try:
-            files = open("../key.json")
-            key = json.load(files)
+            files = open("./key.json")
+            config = json.load(files)
             files.close()
         except Exception as e:
             print("Couldn't load json")
 
-        return key['key']
+        return config['key']
