@@ -6,8 +6,9 @@ class MinecraftCommand(Command):
 
 	def __init__(self, config):
 		super(MinecraftCommand, self).__init__(config)
-		self.__survivalServer = MinecraftServer.lookup("survival.intercraftmc.com")
-		self.__creativeServer = MinecraftServer.lookup("creative.intercraftmc.com")
+		self.__config = config
+		self.__creativeServer = MinecraftServer.lookup(self.__config['minecraft']['address_creative'])
+		self.__survivalServer = MinecraftServer.lookup(self.__config['minecraft']['address_survival'])
 
 
 	def status(self, message):
@@ -23,8 +24,11 @@ class MinecraftCommand(Command):
 		status = server.status()
 		result += 'Latency: ' + str(status.latency) + 'ms\n'
 		result += 'Players online: ' + str(status.players.online)
-		for player in status.players.sample:
-			result += '\n  ' + player.name
+
+		# Because for some reason it returns `None` instead of an empty list
+		if status.players.sample:
+			for player in status.players.sample:
+				result += '\n  ' + player.name
 		return result
 
 

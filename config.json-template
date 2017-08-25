@@ -5,6 +5,10 @@
 	"discord": {
 		"key" : ""
 	},
+	"minecraft": {
+		"address_creative": "",
+		"address_survival": ""
+	},
 	"wolframalpha": {
 		"key": ""
 	}
