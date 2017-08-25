@@ -7,7 +7,8 @@ from modules.soup import *
 
 class SoupCommand(Command):
 
-	def __init__(self):
+	def __init__(self, config):
+		super(SoupCommand, self).__init__(config)
 		self.__inflect = inflect.engine()
 		self.__soup = Soup()
 

@@ -1,0 +1,11 @@
+{
+	"cleverbot": {
+		"key": ""
+	},
+	"discord": {
+		"key" : ""
+	},
+	"wolframalpha": {
+		"key": ""
+	}
+}

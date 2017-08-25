@@ -2,13 +2,27 @@ import discord
 import asyncio
 
 from commands.command_manager import *
+from modules.cleverbot import *
+from utils.config import *
 
 
 class InterCraftBot(discord.Client):
 
     def __init__(self):
         super(InterCraftBot, self).__init__()
-        self.__commandManager = CommandManager()
+        self.__config = Config()
+        self.__commandManager = CommandManager(self.__config)
+        self.__cleverbot = None
+
+
+    # Override the default run method to extend functionality
+    def run(self):
+        if not self.__config.load():
+            return 1
+        
+        self.__cleverbot = Cleverbot(self.__config['cleverbot']['key'])
+
+        return super(InterCraftBot, self).run(self.__config['discord']['key'])
 
 
     @asyncio.coroutine
@@ -25,6 +39,15 @@ class InterCraftBot(discord.Client):
             result = self.__commandManager.execute(message)
             if (result is not None):
                 yield from self.send_message(message.channel, result)
+
+        elif len(message.mentions):
+            isMentioned = False
+            for mention in message.mentions:
+                message.content = message.content.replace(mention.mention, "")
+                if mention.id == self.user.id:
+                    isMentioned = True
+            if isMentioned:
+                yield from self.send_message(message.channel, self.__cleverbot.send(message.author, message.content))
 
         # if message.content.lower().startswith('!touch'):
         #     yield from self.send_message(message.channel, "Don't touch me you pervert!")

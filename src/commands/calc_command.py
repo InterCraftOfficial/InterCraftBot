@@ -4,8 +4,8 @@ from modules.math_string_parser import *
 
 class CalcCommand(Command):
 
-	def __init__(self):
-		super(CalcCommand, self).__init__()
+	def __init__(self, config):
+		super(CalcCommand, self).__init__(config)
 		self.__mathParser = MathStringParser()
 
 

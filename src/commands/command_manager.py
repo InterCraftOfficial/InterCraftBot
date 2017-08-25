@@ -4,8 +4,9 @@ import re
 
 class CommandManager:
 
-	def __init__(self):
+	def __init__(self, config):
 		
+		self.__config = config
 		self.__modules = {}
 
 
@@ -14,7 +15,7 @@ class CommandManager:
 			# try:
 				moduleName = commandName + '_command'
 				command = getattr(importlib.__import__('commands.' + moduleName), moduleName).commandClass
-				self.__modules[commandName] = command()
+				self.__modules[commandName] = command(self.__config)
 				print("Autoload successful for: " + commandName)
 				return self.__modules[commandName]
 			# except ImportError:

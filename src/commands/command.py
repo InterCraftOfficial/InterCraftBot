@@ -3,6 +3,12 @@ import re
 
 class Command:
 
+	def __init__(self, config):
+
+		# Make the config pretty hidden
+		self.__config__ = config 
+
+
 	def commandMethod(self, name):
 		if name == 'exec_':
 			return None

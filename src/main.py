@@ -1,17 +1,15 @@
 import sys
-from client import *
-
-from utils.jsonreader import *
+from intercraftbot import *
 
 
 def main(argv):
 
-    client = InterCraftBot()
+	# Create the InterCraftBot instance
+    icBot = InterCraftBot()
 
-    jsonLoaderKey = JsonReader()
+    # Execute until finished
+    return icBot.run()
 
-    client.run(jsonLoaderKey.getServerKey())
-    return 0
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

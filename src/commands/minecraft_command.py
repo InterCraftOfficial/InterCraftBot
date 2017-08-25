@@ -4,7 +4,8 @@ from mcstatus import MinecraftServer
 
 class MinecraftCommand(Command):
 
-	def __init__(self):
+	def __init__(self, config):
+		super(MinecraftCommand, self).__init__(config)
 		self.__survivalServer = MinecraftServer.lookup("survival.intercraftmc.com")
 		self.__creativeServer = MinecraftServer.lookup("creative.intercraftmc.com")
 
