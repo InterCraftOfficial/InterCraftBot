@@ -1,11 +1,15 @@
 import discord
 import asyncio
 
-from utils.soup import *
+from commands.command_manager import *
 
-soup = Soup()
 
 class InterCraftBot(discord.Client):
+
+    def __init__(self):
+        super(InterCraftBot, self).__init__()
+        self.__commandManager = CommandManager()
+
 
     @asyncio.coroutine
     def on_ready(self):
@@ -13,14 +17,21 @@ class InterCraftBot(discord.Client):
         print(self.user.name)
         print(self.user.id)
 
+
     @asyncio.coroutine
     def on_message(self, message):
-        if message.content.lower().startswith('!touch'):
-            yield from self.send_message(message.channel, "Don't touch me you pervert!")
+
+        if message.content.startswith('!'):
+            result = self.__commandManager.execute(message)
+            if (result is not None):
+                yield from self.send_message(message.channel, result)
+
+        # if message.content.lower().startswith('!touch'):
+        #     yield from self.send_message(message.channel, "Don't touch me you pervert!")
 
         # if message.content.lower().startswith('!put into'):
         #     messageCommand = message.content.split()
-        #
+
         #     if messageCommand[2] == 'soup':
         #         global soup
         #         soup.addIngredient(messageCommand[3])
@@ -28,9 +39,8 @@ class InterCraftBot(discord.Client):
         #             theText = "Added a " + str(messageCommand[3]) + " to the soup. There is " + str(soup.checkIngredient(messageCommand[3])) + " " + str(messageCommand[3]) + " in the soup."
         #         else:
         #             theText = "Added a " + str(messageCommand[3]) + " to the soup. There are " + str(soup.checkIngredient(messageCommand[3])) + " " + str(messageCommand[3]) + "s in the soup."
-        #
         #         yield from self.send_message(message.channel, theText)
-        #
+
         # if message.content.lower().startswith('!soup'):
         #     messageCommand = message.content.split()
         #     global soup
@@ -42,7 +52,7 @@ class InterCraftBot(discord.Client):
         #                 theText += "There is " + str(soup.checkIngredient(ingredients)) + " " + str(ingredients) + " in the soup \n"
         #             else:
         #                 theText += "There are " + str(soup.checkIngredient(ingredients)) + " " + str(ingredients) + "s in the soup \n"
-        #
+
         #         yield from self.send_message(message.channel, theText)
 
     @asyncio.coroutine
