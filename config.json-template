@@ -3,7 +3,8 @@
 		"key": ""
 	},
 	"discord": {
-		"key" : ""
+		"key" : "",
+    "modmail": ""
 	},
 	"minecraft": {
 		"address_creative": "",

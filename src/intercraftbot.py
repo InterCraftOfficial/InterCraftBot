@@ -13,6 +13,7 @@ class InterCraftBot(discord.Client):
         self.__config = Config()
         self.__commandManager = CommandManager(self.__config)
         self.__cleverbot = None
+        self.__modmail = None
 
 
     # Override the default run method to extend functionality
@@ -30,6 +31,11 @@ class InterCraftBot(discord.Client):
         print('Logged in as:')
         print(self.user.name)
         print(self.user.id)
+        if len(self.servers) != 1 or self.__config["discord"]["modmail"] == "":
+            print("Modmail disabled.")
+        else:
+            self.__modmail = discord.utils.get(self.get_all_channels(),
+                                               name=self.__config["discord"]["modmail"])
 
 
     @asyncio.coroutine
@@ -48,6 +54,10 @@ class InterCraftBot(discord.Client):
                     isMentioned = True
             if isMentioned:
                 yield from self.send_message(message.channel, self.__cleverbot.send(message.author, message.content))
+
+        elif message.channel.is_private and message.author != self.user and self.__modmail != None:
+            yield from self.send_message(self.__modmail, "**{}**: {}".format(message.author.name, message.content))
+            yield from self.send_message(message.channel, "Thank you! I've forwarded your request to the mods!")
 
         # if message.content.lower().startswith('!touch'):
         #     yield from self.send_message(message.channel, "Don't touch me you pervert!")
@@ -82,3 +92,6 @@ class InterCraftBot(discord.Client):
     def on_member_join(self, member):
         yield from self.send_message(member, "Welcome to the InterCraft Discord server! In order for you to join the server, you will need an admin to approve you. But feel free to chat in the InterCraft lounge, both on voice and in chat!")
         yield from self.send_message(member, "An admin is usually on later in the day CST, so try checking back then!")
+
+        if self.__modmail != None:
+            yield from self.send_message(self.__modmail, "A new user joined: {}".format(member.name))
